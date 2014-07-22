@@ -1,20 +1,24 @@
 {
-  "name": "m8",
-  "version": "0.0.0",
-  "description": "Application to see your penfriends online.",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coockoo/m8.git"
-  },
-  "author": "Oleksandr Bondarchuk",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/coockoo/m8/issues"
-  },
-  "homepage": "https://github.com/coockoo/m8"
+    "name": "m8",
+    "version": "0.0.0",
+    "description": "Application to see your penfriends online.",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/coockoo/m8.git"
+    },
+    "author": "Oleksandr Bondarchuk",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/coockoo/m8/issues"
+    },
+    "dependencies": {
+        "express": "*",
+        "jade": "*"
+    },
+    "homepage": "https://github.com/coockoo/m8"
 }
