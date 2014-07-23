@@ -23,6 +23,6 @@ require.config({
     }
 });
 
-require(['backbone'],function (Backbone) {
-    //Works
+require(['app'],function (App) {
+    new App();
 });
