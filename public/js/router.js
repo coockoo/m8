@@ -2,17 +2,18 @@
  * Created by coockoo on 7/23/14.
  */
 
-define(['backbone'], function(Backbone) {
+define(['backbone', 'controllers/app_controller'], function(Backbone, AppController) {
+    var appController = new AppController();
     return Backbone.Router.extend({
         routes: {
             '': 'index',
-            'users/:id': 'showUser'
+            'room/:id': 'showRoom'
         },
         index: function () {
-            console.log('in index');
+            appController.showIndex();
         },
-        showUser: function (id) {
-            console.log('showing user with id: ', id);
+        showRoom: function (id) {
+
         }
 
     });

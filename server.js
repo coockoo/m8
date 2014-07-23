@@ -7,6 +7,7 @@
     var express = require('express');
     var jade = require('jade');
     var app = express();
+    var port = 3000;
 
     app.engine('jade', jade.__express);
     app.set('view engine', 'jade');
@@ -18,6 +19,8 @@
         res.render('index');
     });
 
-    app.listen(3000);
+    app.listen(port);
+
+    console.log('Server started at port ' + port);
 
 })();
