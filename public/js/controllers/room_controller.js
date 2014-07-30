@@ -16,6 +16,20 @@ define(
                             console.log('fetched: ', model);
                             var roomView = new RoomView({model: model});
                             appView.render(roomView);
+
+                            // -- start of stream
+                            var constraints = {video: true};
+                            function successCallback(stream) {
+                                var video = document.getElementById("local-video");
+                                video.src = window.URL.createObjectURL(stream);
+                                video.play();
+                            }
+                            function errorCallback(error){
+                                console.log("getUserMedia error: ", error);
+                            }
+                            getUserMedia(constraints, successCallback, errorCallback);
+                            // -- end of stream
+
                         },
                         error: function (model, response, options) {
                             console.log('error occurred');
