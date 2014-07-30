@@ -11,7 +11,7 @@ define(
             template: _.template(template),
             render: function () {
                 //TODO: change hardcore.
-                this.$el.html(this.template({roomId: 1}));
+                this.$el.html(this.template({roomId: this.model.get('id')}));
                 return this;
             }
         });

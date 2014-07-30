@@ -15,6 +15,11 @@
     app.use('/bower_components', express.static(__dirname + '/bower_components'));
     app.use('/public', express.static(__dirname + '/public'));
 
+    app.get('/api/rooms/:id', function (req, res) {
+        //TODO: make fine room creation
+        res.send(200, {id: req.params.id, data: [], ownerId: 1});
+    });
+
     app.get('*', function (req, res) {
         res.render('index');
     });
