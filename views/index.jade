@@ -3,4 +3,11 @@ head
     title Hello, world
     script(src='/public/js/lib/adapter.js')
     script(src='/bower_components/requirejs/require.js', data-main='/public/js/main')
+    style.
+        #local-video {
+            display:block;
+            -moz-transform: matrix(-1, 0, 0, 1, 0, 0);
+            -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
+            -o-transform:matrix(-1, 0, 0, 1, 0, 0);
+        }
 body

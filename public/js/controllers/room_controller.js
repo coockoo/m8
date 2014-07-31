@@ -18,16 +18,68 @@ define(
                             appView.render(roomView);
 
                             // -- start of stream
+                            var localVideo = document.getElementById("local-video");
+                            var remoteVideo = document.getElementById("remote-video");
+
+                            var localStream = null;
+                            var localPeerConnection = null;
+                            var remotePeerConnection = null;
+
+                            var servers = null;
+
                             var constraints = {video: true};
                             function successCallback(stream) {
-                                var video = document.getElementById("local-video");
-                                video.src = window.URL.createObjectURL(stream);
-                                video.play();
+                                localStream = stream;
+                                localVideo.src = window.URL.createObjectURL(stream);
+                                localVideo.play();
+
+                                localPeerConnection = new RTCPeerConnection(servers);
+                                localPeerConnection.onicecandidate = gotLocalIceCandidate;
+
+                                remotePeerConnection = new RTCPeerConnection(servers);
+                                remotePeerConnection.onaddstream = gotRemoteStream;
+                                remotePeerConnection.onicecandidate = gotRemoteIceCandidate;
+
+                                localPeerConnection.addStream(localStream);
+                                localPeerConnection.createOffer(gotLocalDescription, function () {});
+
                             }
                             function errorCallback(error){
                                 console.log("getUserMedia error: ", error);
                             }
                             getUserMedia(constraints, successCallback, errorCallback);
+
+
+
+                            function gotRemoteStream (event) {
+                                remoteVideo.src = window.URL.createObjectURL(event.stream);
+                                remoteVideo.play();
+                            }
+
+                            function gotLocalDescription (description) {
+                                localPeerConnection.setLocalDescription(description);
+                                remotePeerConnection.setRemoteDescription(description);
+                                remotePeerConnection.createAnswer(gotRemoteDescription, function () {});
+                            }
+
+                            function gotRemoteDescription(description){
+                                remotePeerConnection.setLocalDescription(description);
+                                localPeerConnection.setRemoteDescription(description);
+                            }
+
+                            function gotLocalIceCandidate(event){
+                                if (event.candidate) {
+                                    remotePeerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
+                                }
+                            }
+
+                            function gotRemoteIceCandidate(event){
+                                if (event.candidate) {
+                                    localPeerConnection.addIceCandidate(new RTCIceCandidate(event.candidate));
+                                }
+                            }
+
+
                             // -- end of stream
 
                         },
