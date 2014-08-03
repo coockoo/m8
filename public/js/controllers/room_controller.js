@@ -3,11 +3,13 @@
  */
 
 define(
-    [],
-    function () {
+    ['io'],
+    function (io) {
         function RoomController () {
 
             this.showRoom = function (roomId) {
+                var socket = io.connect();
+                /*
                 //TODO: create room model.
                 require(['views/app_view','views/room_view', 'models/room_model'], function (appView, RoomView, Room) {
                     var room = new Room({id: roomId});
@@ -88,6 +90,7 @@ define(
                         }
                     });
                 });
+                */
             }
 
         }

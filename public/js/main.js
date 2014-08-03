@@ -18,7 +18,8 @@ require.config({
         'text': '/bower_components/requirejs-text/text',
         'backbone': '/bower_components/backbone/backbone',
         'jquery': '/bower_components/jquery/dist/jquery',
-        'underscore': '/bower_components/underscore/underscore'
+        'underscore': '/bower_components/underscore/underscore',
+        'io': '/socket.io/socket.io'
     }
 });
 

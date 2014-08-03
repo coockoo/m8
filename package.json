@@ -18,7 +18,8 @@
     },
     "dependencies": {
         "express": "*",
-        "jade": "*"
+        "jade": "*",
+        "socket.io": "*"
     },
     "homepage": "https://github.com/coockoo/m8"
 }
