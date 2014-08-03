@@ -8,7 +8,29 @@ define(
         function RoomController () {
 
             this.showRoom = function (roomId) {
+                //Default host
+                var mode = 'host';
                 var socket = io.connect();
+                socket.emit('join_room_attempt', {roomId: roomId, client: 'todo'});
+                socket.on('join_room', function (data) {
+                    //TODO: join to room
+                    console.log('join with data: ', data);
+                    mode = data.mode;
+                    if (mode == 'guest') {
+                        //Set hosts video as remote
+                        console.log('guest connect host`s remote video' , data.peer);
+                    } else if (mode == 'host') {
+                        console.log('Host connected. he don`t sets any remote video. He waits till guest connect to him');
+                    }
+                });
+                socket.on('guest_join_room', function (data) {
+                    console.log('gjr', mode, data);
+                    if (mode == 'host') {
+                        //You are host. Set guest`s remote video as main.
+                        //If you are guest you ignore this, because you already have your video
+                        console.log('host connect guest`s remote video', data.peer);
+                    }
+                });
                 /*
                 //TODO: create room model.
                 require(['views/app_view','views/room_view', 'models/room_model'], function (appView, RoomView, Room) {

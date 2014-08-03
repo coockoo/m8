@@ -19,10 +19,43 @@
     app.use('/public', express.static(__dirname + '/public'));
 
 
+    // -- Start io part
     var io = require('socket.io').listen(server);
+
+    var Room = require('./models/room');
+    var rooms = {};
+    var clientsQueue = [];
+
     io.sockets.on('connection', function (socket) {
         console.log('Connected socket: ', socket.id);
+        socket.on('join_room_attempt', function (data) {
+            console.log('Attempt to join room with id [', data.roomId, ']');
+            //If this room not exists we create it.
+            var room = null;
+            if (!rooms[data.roomId]) {
+                room = new Room({id: data.roomId});
+                room.setHost(data.client);
+                rooms[data.roomId] = room;
+                this.emit('join_room', {mode: 'host', peer: null});
+            } else {
+                room = rooms[data.roomId];
+                if (!room.isFull()) {
+                    console.log('guest can connect');
+                    room.setGuest(data.client);
+                    this.emit('join_room', {mode: 'guest', peer: room.getHost()});
+                    io.sockets.emit('guest_join_room', {peer: room.getGuest()})
+                } else {
+                    console.log('waiting. there is not enough room');
+                    //TODO: wait.
+                    // And when host leaves set first client as host and next one as guest (if there is one).
+                    // If guest leaves replace him with other guest in queue
+                    clientsQueue.push(data.client);
+                }
+
+            }
+        }.bind(socket));
     });
+    // -- end io part
 
     app.get('/api/rooms/:id', function (req, res) {
         //TODO: make fine room creation
