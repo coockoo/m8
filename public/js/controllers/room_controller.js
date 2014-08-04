@@ -7,15 +7,41 @@ define(
     function (io) {
         function RoomController () {
 
+            //TODO: IUST SCAN. URGENT!1 VERY!1
+            var stream = null;
+            var servers = null;
+            var localVideo = document.getElementById("local-video");
+            var remoteVideo = document.getElementById("remote-video");
+            var description = null;
+
+            var peerConnection = new RTCPeerConnection(servers);
+
+            // Success callback on getUserMedia
+            function gotUserMedia (_stream) {
+                stream = _stream;
+                localVideo.src = window.URL.createObjectURL(stream);
+                localVideo.play();
+            }
+
+            function showLocalVideo () {
+                var constraints = {video: true};
+                //TODO: error handling (3rd parameter).
+                getUserMedia(constraints, gotUserMedia, function () {});
+            }
+
             this.showRoom = function (roomId) {
+                showLocalVideo();
                 //Default host
                 var mode = 'host';
                 var socket = io.connect();
-                socket.emit('join_room_attempt', {roomId: roomId, client: 'todo'});
+                //TODO: we can get description after we know if we are host or client
+                socket.emit('join_room_attempt', {roomId: roomId, client: {description: description}});
+                socket.on('set_mode', function (data) {
+                    mode = data.mode;
+                });
                 socket.on('join_room', function (data) {
                     //TODO: join to room
                     console.log('join with data: ', data);
-                    mode = data.mode;
                     if (mode == 'guest') {
                         //Set hosts video as remote
                         console.log('guest connect host`s remote video' , data.peer);

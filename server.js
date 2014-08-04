@@ -36,13 +36,15 @@
                 room = new Room({id: data.roomId});
                 room.setHost(data.client);
                 rooms[data.roomId] = room;
-                this.emit('join_room', {mode: 'host', peer: null});
+                this.emit('set_mode', {mode: 'host'});
+                this.emit('join_room', {peer: null});
             } else {
                 room = rooms[data.roomId];
                 if (!room.isFull()) {
                     console.log('guest can connect');
                     room.setGuest(data.client);
-                    this.emit('join_room', {mode: 'guest', peer: room.getHost()});
+                    this.emit('set_mode', {mode: 'guest'});
+                    this.emit('join_room', {peer: room.getHost()});
                     io.sockets.emit('guest_join_room', {peer: room.getGuest()})
                 } else {
                     console.log('waiting. there is not enough room');
